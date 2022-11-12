@@ -1,1 +1,5 @@
+[web_server]
 192.168.0.220:10722 package_name=wget
+
+[workstation]
+192.168.0.210:10622

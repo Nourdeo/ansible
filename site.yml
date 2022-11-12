@@ -1,0 +1,50 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  
+  - name: install wget server on centos 7
+    package:
+      name: "{{ package_name }}"
+      state: present
+    when: ansible_distribution == "CentOS"
+
+
+
+- hosts: web_server
+  become: true
+  tasks:
+  
+  - name: install apache on Centos
+    yum:
+      name: httpd
+      state: latest
+
+
+  - name: copy file to my CentOS server
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
+- hosts: workstation
+  become: true
+  tasks:
+  
+  - name: install unzip on my workstation
+    tags: workstation
+    package:
+      name: unzip
+      state: latest
+
+  - name: install terraform
+    tags: workstation
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/1.3.4/terraform_1.3.4_linux_386.zip
+      dest: /usr/local/bin
+      remote_src: yes
+      owner: root
+      group: root
+      mode: 0644
