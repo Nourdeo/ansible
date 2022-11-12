@@ -1,0 +1,6 @@
+- name: install wget server on centos 7
+  package:
+    name: httpd
+    state: present
+  when: ansible_distribution == "CentOS"
+

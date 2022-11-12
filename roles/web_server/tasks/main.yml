@@ -1,0 +1,40 @@
+- name: update the package
+  tags: update
+  yum:
+    update_cache: yes
+  changed_when: false
+
+- name: install apache on Centos
+  yum:
+    name: httpd
+    state: latest
+
+- name: copy file to my CentOS server
+  copy:
+    src: default_site.html
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: 0644
+
+- name: change the email of httpd config file
+  tags: email
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: "^ServerAdmin"
+    line: ServerAdmin nourelddin@example1.com
+  register: httpd
+- name: restart httpd service
+  tags: email
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+  when: httpd.changed
+
+
+- name: add user to my CentOS server
+  tags: user
+  user:
+    name: test
+    group: root
