@@ -3,8 +3,8 @@
   become: true
   tasks:
   
-  - name: install apache server on centos 7
-    yum:
-      name: wget
+  - name: install wget server on centos 7
+    package:
+      name: "{{ package_name }}"
       state: present
     when: ansible_distribution == "CentOS"
